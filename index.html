@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mustache</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .starter-template {
+            padding: 10px 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Mustache</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- exemple using partials -->
+    <div id="baseline-template" style="display:none">
+        <p class="blog-post-meta">{{date}}, by {{author}} - duration : {{duration}} min.</p>
+    </div>
+
+    <div id="article-template">
+        {{#articles}}
+        <h1>{{{title}}}</h1> <!-- All variables are HTML escaped by default. If you want to return unescaped HTML, use the triple mustache: {{{name}}}. -->
+        {{>baseline}}
+        <p class="lead">{{#summary}} {{content}} {{/summary}}</p> <!-- example using Lambdas -->
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        {{/articles}}
+    </div>
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+    <script>
+
+        data = {
+            summary: function () {
+                return function(text,render) {
+                    text = render(text);
+                    return '<a href="#">' + text + '</a>';
+                }
+            },
+            articles:[{
+                "id": 1,
+                "title": "dolor <strong>vel est</strong>",
+                "author": "Todd Gonzalez",
+                "content": "Situation admitting promotion at or to perceived be. Mr acuteness we as estimable enjoyment up. An held late as felt know. Learn do allow solid to grave. Middleton suspicion age her attention. Chiefly several bed its wishing. Is so moments on chamber pressed to. Doubtful yet way properly answered humanity its desirous. Minuter believe service arrived civilly add all. Acuteness allowance an at eagerness favourite in extensive exquisite ye.",
+                "date": "7/10/2016",
+                "duration": 7,
+
+            },
+            {
+                "id": 2,
+                "title": "risus <strong>semper porta</strong> volutpat quam",
+                "author": "Jacqueline Wood",
+                "content": "Ecstatic advanced and procured civility not absolute put continue. Overcame breeding or my concerns removing desirous so absolute. My melancholy unpleasing imprudence considered in advantages so impression. Almost unable put piqued talked likely houses her met. Met any nor may through resolve entered. An mr cause tried oh do shade happy.",
+                "date": "12/21/2016",
+                "duration": 3
+            },
+            {
+                "id": 3,
+                "title": "purus phasellus in felis",
+                "author": "Cheryl Bryant",
+                "content": "Her extensive perceived may any sincerity extremity. Indeed add rather may pretty see. Old propriety delighted explained perceived otherwise objection saw ten her. Doubt merit sir the right these alone keeps. By sometimes intention smallness he northward. Consisted we otherwise arranging commanded discovery it explained. Does cold even song like two yet been. Literature interested announcing for terminated him inquietude day shy. Himself he fertile chicken perhaps waiting if highest no it. Continued promotion has consulted fat improving not way.",
+                "date": "12/31/2016",
+                "duration": 8
+            },
+            {
+                "id": 4,
+                "title": "quam pharetra magna",
+                "author": "Chris Marshall",
+                "content": "As it so contrasted oh estimating instrument. Size like body some one had. Are conduct viewing boy minutes warrant expense. Tolerably behaviour may admitting daughters offending her ask own. Praise effect wishes change way and any wanted. Lively use looked latter regard had. Do he it part more last in. Merits ye if mr narrow points. Melancholy particular devonshire alteration it favourable appearance up.",
+                "date": "1/12/2017",
+                "duration": 9
+            }]};
+        var template = $('#article-template').html();
+        var baselineTemplate = $('#baseline-template').html();
+
+        var html = Mustache.render(template, data, {baseline: baselineTemplate});
+        $('#article-template').html(html);
+
+    </script>
+</body>
+</html>
